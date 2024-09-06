@@ -33,23 +33,27 @@
     <script>
         // 用來偵測是否已經訪問過此頁面
         window.onload = function() {
-            // 使用不同的 key 來區分不同的頁面
             var pageKey = window.location.pathname; // 取得當前頁面的路徑作為 key
-            if (localStorage.getItem(pageKey + "_visited")) {
-                // 如果已經造訪過，顯示頁面無法再進入的訊息
+            if (localStorage.getItem(pageKey + "_visited") === "2") {
+                // 如果已經點擊過兩次或以上，顯示 2.jpg
                 document.body.innerHTML = '<div class="gif-container"><img src="2.jpg" alt="You have already claimed your prize"></div>';
             }
-            }
-        
+        }
 
-        // 點擊 GIF 後進行跳轉，並將頁面標記為已訪問
+        // 點擊 GIF 後進行跳轉或顯示 2.jpg
         function redirectAndClose() {
-            // 使用當前頁面的路徑作為 key 來標記訪問狀態
-            var pageKey = window.location.pathname;
-            // 設置已經訪問的標記
-            localStorage.setItem(pageKey + "_visited", "true");
-            // 跳轉到指定 URL
-            window.location.replace("https://u.lin.ee/VEkWvFH");
+            var pageKey = window.location.pathname; // 取得當前頁面的路徑作為 key
+            var visitCount = localStorage.getItem(pageKey + "_visited");
+
+            if (!visitCount) {
+                // 第一次點擊，跳轉到目標頁面
+                localStorage.setItem(pageKey + "_visited", "1"); // 設置第一次點擊標記
+                window.location.href = "https://u.lin.ee/VEkWvFH";
+            } else if (visitCount === "1") {
+                // 第二次點擊，顯示 2.jpg
+                localStorage.setItem(pageKey + "_visited", "2"); // 設置第二次點擊標記
+                document.body.innerHTML = '<div class="gif-container"><img src="2.jpg" alt="You have already claimed your prize"></div>';
+            }
         }
     </script>
 </head>
